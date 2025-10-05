@@ -28,16 +28,17 @@ Create a `.env` file in the project root with the following values (example):
 # Twilio configuration
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=your_auth_token_here
-TWILIO_PHONE_NUMBER=+1234567890
+TWILIO_SERVICES_ID=your_service_id
 
 # Server
-PORT=8080
+PORT=8000
 
 # Optional: change to production if needed
 GIN_MODE=debug
 ```
 
 Notes:
+
 - Keep your Twilio credentials secret. Don't commit `.env` to version control.
 - Adjust `PORT` if 8080 is already in use on your machine.
 
@@ -49,11 +50,10 @@ Open PowerShell in the project directory and run:
 # ensure module dependencies are present
 go mod tidy
 
-# build the binary
-go build -o .\bin\go-otp-verify.exe ./...
 
-# run directly (alternative)
-go run .
+# run directly
+cd ./cmd
+go run main.go
 ```
 
 If you see an error when running `go mod init` like "outside GOPATH, module path must be specified", it's because `go mod init` requires an explicit module path when the project is outside GOPATH. This repository already contains a `go.mod` with module path `github.com/PrateekKumar15/go-otp-verify`, so you normally don't need to run `go mod init`.
@@ -85,6 +85,7 @@ The server will listen on the port set by `PORT` (default 8080). If `GIN_MODE=re
 The project implements an OTP send + verify flow. The exact endpoints and payloads may vary in the code; common examples are provided below. If your code uses different endpoint names/payloads, adapt accordingly.
 
 - POST /otp/send
+
   - Body (JSON): { "phone": "+11234567890" }
   - Response: 200 OK on success (OTP sent)
 
@@ -132,6 +133,7 @@ This repository doesn't include an explicit license. Add a LICENSE file if you p
 ---
 
 If you'd like, I can:
+
 - Open `main.go` and generate an accurate API reference from the actual routes and payloads.
 - Add a sample `.env.example` file and a tiny integration test that simulates send/verify (mocking Twilio).
 
